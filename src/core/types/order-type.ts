@@ -4,7 +4,11 @@ import { UserType } from "./user-type";
 
 export type OrderType = BaseType & {
   userId?: String;
-  quantity: number;
-  clothes: ClotheType[];
+  clothes: ClotheItem[];
   user: UserType;
+  totalPrice:number
 };
+
+export type ClotheItem = ClotheType &{
+  quantity: number
+}
