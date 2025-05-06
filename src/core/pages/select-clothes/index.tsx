@@ -45,7 +45,7 @@ export function SelectClothesScreen() {
                 peça.
               </p>
             </Column>
-            <div className="grid grid-cols-4 gap-4 max-w-[700px]">
+            <div className="grid grid-cols-4 gap-4 max-w-[700px] max-lg:grid-cols-2 max-md:grid-cols-1">
               {mockClothes.map((clothe) => (
                 <ClotheCard
                   key={clothe.id}
@@ -59,6 +59,7 @@ export function SelectClothesScreen() {
             <ClothesSelectedsList
               onRemoveClothe={(data) => handleRemoveClothe(data)}
               selectedData={selectedClothesList}
+              onSubmit={(data) => console.log(data)}
             />
           </div>
         </Row>

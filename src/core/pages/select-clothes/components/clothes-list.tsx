@@ -2,6 +2,7 @@ import { AmountStepper } from "@/core/components/amount-stepper";
 import { Button } from "@/core/components/button";
 import { Column, Row } from "@/core/components/layout";
 import { ClotheType } from "@/core/types/clothe-type";
+import { ClotheItem } from "@/core/types/order-type";
 import { List, MoveRight, Trash } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -9,24 +10,35 @@ import { useState } from "react";
 interface ClothesSelectedsProps {
   selectedData: ClotheType[];
   onRemoveClothe: (data: ClotheType) => void;
-
+  onSubmit: (data: ClotheItem[]) => void;
 }
 
-export function ClothesSelectedsList({ selectedData,onRemoveClothe }: ClothesSelectedsProps) {
+export function ClothesSelectedsList({
+  selectedData,
+  onRemoveClothe,
+  onSubmit,
+}: ClothesSelectedsProps) {
   const [quantities, setQuantities] = useState<Record<string, number>>({});
   const totalGeral = selectedData.reduce((acc, data) => {
     const quantity = quantities[data.id!] || 1;
     return acc + data.price * quantity;
   }, 0);
-  const handleChange = (id: string, delta: number) => {
+  function handleChange(id: string, delta: number) {
     setQuantities((prev) => ({
       ...prev,
       [id]: Math.max(1, (prev[id] || 1) + delta),
     }));
-  };
+  }
 
+  function handleSubmitAll() {
+    const payload: ClotheItem[] = selectedData.map((clothe) => ({
+      ...clothe,
+      quantity: quantities[clothe.id!] || 1,
+    }));
+    onSubmit(payload);
+  }
   return (
-    <Column className="bg-white p-2 rounded-md sticky w-full top-[100px] max-h-[500px] h-full shadow-xl/20">
+    <Column className="bg-white p-2 rounded-md sticky w-full md:min-w-[390px] top-[100px] max-h-[500px] h-full shadow-xl/20">
       <Row className="mb-3 text-secondary items-center gap-2">
         <List />
         <p className=" font-bold text-xl">Lista de Roupas</p>
@@ -65,10 +77,18 @@ export function ClothesSelectedsList({ selectedData,onRemoveClothe }: ClothesSel
                       maximumFractionDigits: 2,
                     })}
                   </p>
+                  <div className="md:hidden block">
+                    <AmountStepper
+                      actualNumber={quantity}
+                      onDecrease={() => handleChange(data.id!, -1)}
+                      onIncrease={() => handleChange(data.id!, 1)}
+                      limit={10}
+                    />
+                  </div>
                 </Column>
               </Row>
 
-              <div className="flex-1 flex justify-center">
+              <div className="flex-1 flex justify-center max-md:hidden ">
                 <AmountStepper
                   actualNumber={quantity}
                   onDecrease={() => handleChange(data.id!, -1)}
@@ -86,7 +106,10 @@ export function ClothesSelectedsList({ selectedData,onRemoveClothe }: ClothesSel
               </p>
 
               <div className="w-[40px] flex justify-end">
-                <div onClick={()=>onRemoveClothe(data)} className="border p-1 rounded-md hover:bg-red-500 cursor-pointer hover:text-white transition-all text-red-500 border-red-500">
+                <div
+                  onClick={() => onRemoveClothe(data)}
+                  className="border p-1 rounded-md hover:bg-red-500 cursor-pointer hover:text-white transition-all text-red-500 border-red-500"
+                >
                   <Trash size={16} />
                 </div>
               </div>
@@ -108,6 +131,8 @@ export function ClothesSelectedsList({ selectedData,onRemoveClothe }: ClothesSel
       </div>
       <div className="h-[50px]">
         <Button
+          onClick={handleSubmitAll}
+          disabled={selectedData.length <= 0}
           colorSchema="primary"
           label="Adicionar no carrinho"
           icon={<MoveRight />}
