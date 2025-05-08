@@ -1,8 +1,11 @@
 "use client";
+import POSTnewUser from "@/core/actions/post-new-user";
 import SignInImage from "@/core/assets/images/casaco-azul.png";
 import { Container } from "@/core/components/container";
 import { Footer } from "@/core/components/footer";
 import { Column, Row } from "@/core/components/layout";
+import { RegisterUserInputType } from "@/core/types/register-user-input-type";
+import { useMutation } from "@tanstack/react-query";
 import { Home } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -12,20 +15,12 @@ import { FinalSection } from "./sections/final-section";
 import { PersonalDataSection } from "./sections/personal-data-section";
 import { SecuritySection } from "./sections/security-section";
 
-type SignUserType = {
-  name: string;
-  email: string;
-  password: string;
-  cpf: string;
-  birthday: string;
-  gender: string;
-  phone: string;
-};
+
 
 export function SignInScreen() {
   const router = useRouter();
   const [session, setSession] = useState<number>(1);
-  const [user, setUser] = useState<SignUserType>({
+  const [user, setUser] = useState<RegisterUserInputType>({
     birthday: "",
     email: "",
     gender: "",
@@ -38,8 +33,15 @@ export function SignInScreen() {
   useEffect(()=>{
     if(session === 4) {
       console.log(user);
+      mutate(user)
     }
+    
   },[session]);
+
+  const { mutate, isPending, isSuccess, isError, error } = useMutation({
+    mutationKey: ['newUser'],
+    mutationFn: POSTnewUser,
+  });
 
   return (
     <>

@@ -25,7 +25,8 @@ export function buildNextAuthOptions(): NextAuthOptions {
 
     callbacks: {
       async signIn() {
-        return true;
+        
+        return '/confirm-data';
       },
 
       async session({ session, user }) {

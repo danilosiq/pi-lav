@@ -8,11 +8,13 @@ export function PrismaAdapter(): Adapter {
         data: {
           name: user.name,
           email: user.email,
-          cpf: '',
-          gender: '',
-          phone: '',
+          cpf: "",
+          gender: "",
+          phone: "",
         },
       });
+
+      
       return {
         id: prismaUser.id,
         name: prismaUser.name,
