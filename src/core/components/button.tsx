@@ -1,6 +1,6 @@
 import { ComponentProps, ReactNode } from "react";
 
-interface SearchInputTextProps extends ComponentProps<"button"> {
+interface ButtonProps extends ComponentProps<"button"> {
   colorSchema: keyof typeof ColorSchema;
   label: string;
   disabled?: boolean;
@@ -13,7 +13,7 @@ export function Button({
   label,
   icon,
   ...props
-}: SearchInputTextProps) {
+}: ButtonProps) {
   return (
     <button
       {...props}
@@ -30,7 +30,7 @@ export function Button({
 
 export const ColorSchema = {
   primary:
-    "bg-primary text-white hover border-transparent hover:bg-primary-light",
+    "bg-primary text-white border-transparent hover:bg-primary-light",
   ghost:
     "bg-white text-gray-500 hover:text-primary border-gray-400 hover:border-primary",
   secondary:
