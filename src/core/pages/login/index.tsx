@@ -1,10 +1,12 @@
 "use client";
+import GoogleIcon from "@/core/assets/icons/google-icon.svg";
 import LoginImage from "@/core/assets/images/senha.png";
 import { Button } from "@/core/components/button";
 import { Container } from "@/core/components/container";
 import { Footer } from "@/core/components/footer";
 import { Column, Row } from "@/core/components/layout";
 import { TextInput } from "@/core/components/text-input";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -41,9 +43,23 @@ export function LoginScreen() {
                 </label>
                 <Column>
                   <Button colorSchema="primary" label="Entrar" />
+                  <div
+                    onClick={() => signIn("google")}
+                    className="flex items-center my-1 justify-center gap-6 border border-slate-400 text-slate-500 hover:text-primary hover:border-primary cursor-pointer p-1 rounded-md"
+                  >
+                    Entrar com o Goggle{" "}
+                    <Image
+                      src={GoogleIcon}
+                      alt="google icon"
+                      className="w-[30px] h-[30px]"
+                    />{" "}
+                  </div>
                   <p className="text-primary text-sm mt-2">
                     Não tem uma conta?{" "}
-                    <span onClick={()=>router.push('/sign-in')} className="font-lilita hover:text-secondary  text-primary cursor-pointer">
+                    <span
+                      onClick={() => router.push("/sign-in")}
+                      className="font-lilita hover:text-secondary  text-primary cursor-pointer"
+                    >
                       Clique aqui e crie uma agora!
                     </span>
                   </p>
