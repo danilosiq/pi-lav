@@ -21,7 +21,7 @@ export function useCheckData(email?: string) {
           console.log(user);
           
           if (!user.cpf || !user.gender || !user.phone) {
-            router.push('/check-data')            
+            router.push('/confirm-data')            
           } else {
             router.push('/home')            
           }
