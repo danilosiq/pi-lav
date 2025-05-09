@@ -1,42 +1,45 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+  const { user } = body;
 
+  const userExistByEmail = await prisma.user.findUnique({
+    where: { email: user.email },
+  });
 
+  if (userExistByEmail) {
+    return NextResponse.json({ error: "Email already used" }, { status: 409 });
+  }
 
-export async function POST(req:NextRequest) {
-    
-    const body = await req.json();
-    const {user} = body
+  const userExistByCPF = await prisma.user.findUnique({
+    where: { cpf: user.cpf },
+  });
 
-    const userExistByEmail = await prisma.user.findFirst({
-        where:{email:user.email}
-    })
+  if (userExistByCPF) {
+    return NextResponse.json({ error: "CPF already used" }, { status: 409 });
+  }
 
-    if(userExistByEmail){
-        return NextResponse.json({ error: "Email alredy used" }, { status: 409 })
-    }
+  const newUser = await prisma.user.create({
+    data: {
+      cpf: user.cpf,
+      email: user.email,
+      gender: user.gender,
+      name: user.name,
+      phone: user.phone,
+      accounts: {
+        create: {
+          providerId: "credentials",
+          providerType: "credentials",
+          providerAccountId: user.email, // pode ser o email mesmo
+        },
+      },
+    },
+    include: {
+      accounts: true,
+    },
+  });
 
-    const userExistByCPF = await prisma.user.findFirst({
-        where:{email:user.cpf}
-    })
-
-    if(userExistByCPF){
-        return NextResponse.json({ error: "CPF alredy used" }, { status: 409 })
-    }
-
-    
-
-    const newUser = await prisma.user.create({
-        data:{
-            cpf:user.cpf,
-            email:user.email,
-            gender:user.gender,
-            name:user.name,
-            phone:user.phone
-        }
-    })
-
-    
-    return NextResponse.json({newUser})
+  return NextResponse.json({ newUser });
 }
