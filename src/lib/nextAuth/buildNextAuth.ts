@@ -25,16 +25,19 @@ export function buildNextAuthOptions(): NextAuthOptions {
 
     callbacks: {
       async signIn() {
-        
-        return '/confirm-data';
+        return true
       },
-
+    
       async session({ session, user }) {
         return {
           ...session,
           user
         }
+      },
+    
+      async redirect({ url, baseUrl }) {
+        return `${baseUrl}/confirm-data`
       }
-    },
+    }
   };
 }
