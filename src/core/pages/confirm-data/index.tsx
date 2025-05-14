@@ -1,5 +1,5 @@
 "use client";
-import POSTconfirmData from "@/core/actions/confirm-data";
+import POSTconfirmData from "@/core/actions/post-confirm-data";
 import washMachineDoubtImage from "@/core/assets/images/duvida.png";
 import { Button } from "@/core/components/button";
 import { Container } from "@/core/components/container";
@@ -58,6 +58,8 @@ export function ConfirmDataScreen() {
         email: session.data.user.email!,
       });
     }
+    console.log(session.data?.user?.email);
+    
   }, [session.data?.user?.name, reset]);
 
   const { mutate } = useMutation({

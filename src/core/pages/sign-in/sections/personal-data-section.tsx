@@ -4,6 +4,7 @@ import { Stepper } from "@/core/components/stepper";
 import { TextInput } from "@/core/components/text-input";
 import { BirthdayTextinput } from "@/core/pages/sign-in/components/birthday-text-input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -17,23 +18,27 @@ type DataSchemaType = z.infer<typeof PersonalDataSchema>;
 
 interface PersonalDataSectionProps {
   onNextStep: (sectionName: number) => void;
-  sectionData: (sectionData:DataSchemaType)=>void
+  sectionData: (sectionData: DataSchemaType) => void;
 }
 
-export function PersonalDataSection({ onNextStep,sectionData }: PersonalDataSectionProps) {
+export function PersonalDataSection({
+  onNextStep,
+  sectionData,
+}: PersonalDataSectionProps) {
+  const router = useRouter();
   const {
     handleSubmit,
     register,
     control,
     formState: { errors },
   } = useForm<DataSchemaType>({
-    resolver:zodResolver(PersonalDataSchema),
+    resolver: zodResolver(PersonalDataSchema),
   });
 
   function handleNextStep(data: DataSchemaType) {
     console.log(data);
     onNextStep(2);
-    sectionData(data)
+    sectionData(data);
   }
   return (
     <form
@@ -87,19 +92,22 @@ export function PersonalDataSection({ onNextStep,sectionData }: PersonalDataSect
           />
         </label>
         <Column>
-        {errors.name && (
-          <p className="text-red-500 text-sm">{errors.name.message}</p>
-        )}
-        {errors.gender && (
-          <p className="text-red-500 text-sm">{errors.gender.message}</p>
-        )}
-        {errors.birthday && (
-          <p className="text-red-500 text-sm">{errors.birthday.message}</p>
-        )}
+          {errors.name && (
+            <p className="text-red-500 text-sm">{errors.name.message}</p>
+          )}
+          {errors.gender && (
+            <p className="text-red-500 text-sm">{errors.gender.message}</p>
+          )}
+          {errors.birthday && (
+            <p className="text-red-500 text-sm">{errors.birthday.message}</p>
+          )}
           <Button colorSchema="primary" label="Proximo" type="submit" />
           <p className="text-primary text-sm mt-2">
             Ja tem uma conta?{" "}
-            <span className="font-lilita hover:text-secondary  text-primary cursor-pointer">
+            <span
+              onClick={() => router.push("/login")}
+              className="font-lilita hover:text-secondary  text-primary cursor-pointer"
+            >
               Clique aqui e entre uma agora!
             </span>
           </p>

@@ -15,14 +15,13 @@ const SecurityDataSchema = z.object({
   }),
 });
 
-type SecuritySchemaType = z.infer<typeof SecurityDataSchema>;
+export type SecuritySchemaType = z.infer<typeof SecurityDataSchema>;
 
 interface SecuritySectionProps {
-  onNextStep: (sectionName: number) => void;
   sectionData: (sectionData: SecuritySchemaType) => void;
 }
 
-export function SecuritySection({ onNextStep,sectionData }: SecuritySectionProps) {
+export function SecuritySection({ sectionData }: SecuritySectionProps) {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [message, setMessage] = useState<string>("");
@@ -35,9 +34,9 @@ export function SecuritySection({ onNextStep,sectionData }: SecuritySectionProps
   });
 
   function handleNextStep(data: SecuritySchemaType) {
-    console.log(data);
-    onNextStep(4);
     sectionData(data)
+    console.log(data);
+    
   }
 
   useEffect(() => {

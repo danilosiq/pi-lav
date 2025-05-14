@@ -13,9 +13,10 @@ import { useEffect, useState } from "react";
 import { ContactSection } from "./sections/contact-section";
 import { FinalSection } from "./sections/final-section";
 import { PersonalDataSection } from "./sections/personal-data-section";
-import { SecuritySection } from "./sections/security-section";
-
-
+import {
+  SecuritySchemaType,
+  SecuritySection,
+} from "./sections/security-section";
 
 export function SignInScreen() {
   const router = useRouter();
@@ -30,19 +31,26 @@ export function SignInScreen() {
     phone: "",
   });
 
-  useEffect(()=>{
-    if(session === 4) {
-      console.log(user);
-      mutate(user)
-    }
-    
-  },[session]);
-
   const { mutate, isPending, isSuccess, isError, error } = useMutation({
-    mutationKey: ['newUser'],
+    mutationKey: ["newUser"],
     mutationFn: POSTnewUser,
   });
+  function handleCreateUser(data: SecuritySchemaType) {
+    const updatedUser = {
+      ...user,
+      password: data.password,
+    };
 
+    setUser(updatedUser);
+    mutate(updatedUser);
+    console.log(updatedUser);
+  }
+
+  useEffect(() => {
+    if (isSuccess) {
+      setSession(4);
+    }
+  }, [isSuccess]);
   return (
     <>
       <Container>
@@ -95,15 +103,7 @@ export function SignInScreen() {
             )}
 
             {session === 3 && (
-              <SecuritySection
-                onNextStep={setSession}
-                sectionData={(data) =>
-                  setUser((prev) => ({
-                    ...prev,
-                    password: data.password,
-                  }))
-                }
-              />
+              <SecuritySection sectionData={(data) => handleCreateUser(data)} />
             )}
 
             {session === 4 && <FinalSection />}
