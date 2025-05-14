@@ -27,6 +27,8 @@ export function buildNextAuthOptions(): NextAuthOptions {
       async signIn() {
         return true
       },
+
+    
     
       async session({ session, user }) {
         return {
@@ -36,7 +38,13 @@ export function buildNextAuthOptions(): NextAuthOptions {
       },
     
       async redirect({ url, baseUrl }) {
-        return `${baseUrl}/confirm-data`
+        const isSignInCallback = url.includes("/callback");
+      
+        if (isSignInCallback) {
+          return `${baseUrl}/confirm-data`;
+        }
+      
+        return url.startsWith(baseUrl) ? url : baseUrl;
       }
     }
   };

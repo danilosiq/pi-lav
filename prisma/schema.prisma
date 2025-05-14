@@ -48,31 +48,58 @@ model User {
   cpf       String    @unique
   phone     String    @unique
   gender    String
+  password  String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   accounts  Account[]
   sessions  Session[]
-  Order     Orders[]
+  cart      Cart[]
+  orders    Order[]
 }
 
-model Orders {
-  id         String    @id @default(cuid())
-  userId     String
+model OrderObject {
+  id         String   @id @default(cuid())
   quantity   Int
   totalPrice Float
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  user       User      @relation(fields: [userId], references: [id])
-  clothes    Clothes[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  clothe     Clothes? @relation(fields: [clothesId], references: [id])
+  clothesId  String   @unique
+  cart       Cart[]
+  Order      Order?   @relation(fields: [orderId], references: [id])
+  orderId    String?
 }
 
 model Clothes {
-  id          String   @id @default(cuid())
+  id          String        @id @default(cuid())
   name        String
   description String
   price       Float
   imageUrl    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  order       Orders[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  orderObject OrderObject[]
+}
+
+model Order {
+  id            String   @id @default(cuid())
+  userId        String
+  paymentMethod String
+  totalPrice    Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id])
+
+  clothes OrderObject[]
+}
+
+model Cart {
+  id         String        @id @default(cuid())
+  userId     String
+  quantity   Int
+  totalPrice Float
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  user       User          @relation(fields: [userId], references: [id])
+  clothes    OrderObject[]
 }

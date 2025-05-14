@@ -150,17 +150,19 @@ exports.Prisma.UserScalarFieldEnum = {
   cpf: 'cpf',
   phone: 'phone',
   gender: 'gender',
+  password: 'password',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.OrdersScalarFieldEnum = {
+exports.Prisma.OrderObjectScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
   quantity: 'quantity',
   totalPrice: 'totalPrice',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  clothesId: 'clothesId',
+  orderId: 'orderId'
 };
 
 exports.Prisma.ClothesScalarFieldEnum = {
@@ -169,6 +171,24 @@ exports.Prisma.ClothesScalarFieldEnum = {
   description: 'description',
   price: 'price',
   imageUrl: 'imageUrl',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OrderScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  paymentMethod: 'paymentMethod',
+  totalPrice: 'totalPrice',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CartScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  quantity: 'quantity',
+  totalPrice: 'totalPrice',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -193,8 +213,10 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
   User: 'User',
-  Orders: 'Orders',
-  Clothes: 'Clothes'
+  OrderObject: 'OrderObject',
+  Clothes: 'Clothes',
+  Order: 'Order',
+  Cart: 'Cart'
 };
 
 /**

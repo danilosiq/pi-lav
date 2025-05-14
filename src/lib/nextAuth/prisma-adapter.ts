@@ -11,6 +11,7 @@ export function PrismaAdapter(): Adapter {
           cpf: "",
           gender: "",
           phone: "",
+          password: "",
         },
       });
 
@@ -95,6 +96,7 @@ export function PrismaAdapter(): Adapter {
             email: account.email ?? "Unknown",
             gender: account.gender ?? "Unknown",
             phone: account.phone ?? "Unknown",
+            password: account.password ?? "Unknown",
           },
         });
       }
@@ -206,9 +208,13 @@ export function PrismaAdapter(): Adapter {
     },
 
     async deleteSession(sessionToken: string) {
-      await prisma.session.deleteMany({
-        where: { sessionToken: sessionToken },
-      });
-    },
+      try {
+        await prisma.session.delete({
+          where: { sessionToken },
+        });
+      } catch (error) {
+        console.warn('Sessão já deletada ou inexistente:', sessionToken);
+      }
+    }
   };
 }
