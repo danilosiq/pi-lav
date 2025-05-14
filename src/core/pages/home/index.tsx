@@ -22,12 +22,15 @@ import { Stepper } from "@/core/components/stepper";
 import { TextArea } from "@/core/components/text-area";
 import { TextInput } from "@/core/components/text-input";
 import { Search } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 export function HomeScreen() {
   return (
     <>
       <Navbar />
       <Container marginTop>
+                <button onClick={()=>signOut()} type="button">QQQQ</button>
+        
         home
         <Stepper steps={5} currentStep={2} /> 
         <Button colorSchema="success" label="Click me" />
