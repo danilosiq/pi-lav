@@ -28,11 +28,12 @@ export async function POST(req: NextRequest) {
       gender: user.gender,
       name: user.name,
       phone: user.phone,
+      password:user.password,
       accounts: {
         create: {
           providerId: "credentials",
           providerType: "credentials",
-          providerAccountId: user.email, // pode ser o email mesmo
+          providerAccountId: user.email, 
         },
       },
     },
