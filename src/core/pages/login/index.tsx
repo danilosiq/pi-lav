@@ -60,7 +60,7 @@ export function LoginScreen() {
             <Column>
               <p
                 className="text-secondary font-black cursor-pointer hover:shadow-md/20 transition-all hover:bg-white p-1 rounded-md w-[70px]"
-                onClick={() => router.back()}
+                onClick={() => router.push('/home')}
               >
                 Voltar
               </p>

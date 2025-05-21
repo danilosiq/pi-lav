@@ -1,5 +1,6 @@
 import { Column } from "@/core/components/layout";
 import { Clock, LogOut, TicketPercentIcon, User } from "lucide-react";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export function ProfileSideBar() {
@@ -8,19 +9,17 @@ export function ProfileSideBar() {
     {
       label: "Dados do perfil",
       icon: <User />,
-      value:'profile-data'
+      value: "profile-data",
     },
     {
       label: "Histórico",
       icon: <Clock />,
-      value:'historic'
-
+      value: "historic",
     },
     {
       label: "Cupons",
       icon: <TicketPercentIcon />,
-      value:'coupon'
-
+      value: "coupon",
     },
   ];
 
@@ -36,7 +35,10 @@ export function ProfileSideBar() {
           <span>{topic.label}</span>
         </div>
       ))}
-      <div className="bg-danger text-white flex justify-center items-center  absolute bottom-0 w-full rounded-b-md py-2 gap-3">
+      <div
+        onClick={() => signOut()}
+        className="bg-danger text-white flex justify-center items-center  absolute bottom-0 w-full rounded-b-md py-2 gap-3"
+      >
         <LogOut />
         <p>sair</p>
       </div>
