@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/drawer";
 import { CircleHelp, Home, Menu, User, WashingMachine } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
+import { useCheckData } from "../hook/useCheckData";
 import { useGetUser } from "../hook/useGetUser";
 import { Button } from "./button";
 import { Column, Row } from "./layout";
@@ -15,6 +16,8 @@ export function Navbar() {
   const { data, isLoading } = useGetUser("GetData");
   const router = useRouter();
   const pathname = usePathname();
+
+  const { isMissingData } = useCheckData(data?.email!);
   const navTopics = [
     {
       label: "Home",
@@ -88,9 +91,12 @@ export function Navbar() {
                   pathname.includes("/profile")
                     ? "shadow-md/40 text-background bg-primary "
                     : "text-primary hover:shadow-md/40"
-                } rounded-md transition-all h-[80%] justify-center gap-2  px-4 items-center cursor-pointer `}
+                } rounded-md transition-all h-[80%] relative justify-center gap-2  px-4 items-center cursor-pointer `}
               >
                 <User />
+                {isMissingData && (
+                  <div className="w-[10px] h-[10px] rounded-full animate-ping bg-danger absolute top-1 left-2" />
+                )}
                 <p className="">Perfil</p>
               </Row>
             </div>
@@ -130,6 +136,8 @@ export function Navbar() {
                       </div>
                     );
                   })}
+
+                  
                 </Column>
               </Column>
             </DrawerContent>

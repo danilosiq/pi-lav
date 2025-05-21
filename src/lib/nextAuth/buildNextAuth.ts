@@ -37,15 +37,6 @@ export function buildNextAuthOptions(): NextAuthOptions {
         }
       },
     
-      async redirect({ url, baseUrl }) {
-        const isSignInCallback = url.includes("/callback");
-      
-        if (isSignInCallback) {
-          return `${baseUrl}/confirm-data`;
-        }
-      
-        return url.startsWith(baseUrl) ? url : baseUrl;
-      }
     }
   };
 }
